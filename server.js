@@ -17,7 +17,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public/assets'));
 
 app.get('/', async function (req, res) {
-  console.log(req.ip);
   res.render('pages/index');
 });
 
