@@ -5,6 +5,7 @@ const formidable = require('formidable');
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
+const process = require('process');
 
 const PORT = 3003;
 const mailgunClient = mailgun.client({
@@ -59,3 +60,20 @@ function redirectTo(location, res) {
     return res.end();
   }
 }
+
+var application = {};
+
+process.on('SIGINT', function onSigint() {
+  application.shutdown();
+});
+
+process.on('SIGTERM', function onSigterm() {
+  application.shutdown();
+});
+
+application.shutdown = function () {
+  // clean up your resources and exit
+  process.exit();
+};
+
+module.exports = application;
