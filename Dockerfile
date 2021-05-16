@@ -11,7 +11,6 @@ USER node
 RUN npm install && npm cache clean --force --loglevel-error
 
 COPY --chown=node:node server.js .
-COPY --chown=node:node lib ./lib/
 
 ENV NODE_ENV=production
 
