@@ -8,7 +8,7 @@ const mailgun = new Mailgun(formData);
 const process = require('process');
 const fetch = require('node-fetch');
 
-const PORT = 3003;
+const PORT = process.env.PORT || 3003;
 const mailgunClient = mailgun.client({
   username: 'api',
   key: process.env.MAILGUN_API_KEY || '',
