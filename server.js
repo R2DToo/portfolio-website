@@ -6,6 +6,7 @@ const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
 const process = require('process');
+const fetch = require('node-fetch');
 
 const PORT = 3003;
 const mailgunClient = mailgun.client({
@@ -30,17 +31,20 @@ app.post('/contact', async (req, res) => {
       return;
     }
     console.log(fields);
-    let contactMeEmail = mailgunClient.messages.create(process.env.MAILGUN_SENDING_DOMAIN, {
-      from: fields.name + " <mailgun@" + process.env.MAILGUN_SENDING_DOMAIN + ">",
-      to: [process.env.CONTACT_FORM_RECEIVING_EMAIL],
-      subject: "Contact Me -- " + fields.name || "",
-      html: "<h4>Name: " + fields.name + "</h4>" +
-      "<h4>Email: " + fields.email + "</h4>" +
-      "<h4>Phone: " + fields.phone + "</h4>" +
-      "<p>Message: " + fields.message + "</p>"
-    })
-    .then(msg => console.log(msg)) // logs response data
-    .catch(err => console.log(err)); // logs any error
+    var verified = await checkCaptcha(fields['g-recaptcha-response']);
+    if (verified === true) {
+      mailgunClient.messages.create(process.env.MAILGUN_SENDING_DOMAIN, {
+        from: fields.name + " <mailgun@" + process.env.MAILGUN_SENDING_DOMAIN + ">",
+        to: [process.env.CONTACT_FORM_RECEIVING_EMAIL],
+        subject: "Contact Me -- " + fields.name || "",
+        html: "<h4>Name: " + fields.name + "</h4>" +
+        "<h4>Email: " + fields.email + "</h4>" +
+        "<h4>Phone: " + fields.phone + "</h4>" +
+        "<p>Message: " + fields.message + "</p>"
+      })
+      .then(msg => console.log("mailgun response: ", msg)) // logs response data
+      .catch(err => console.err("mailgun error: ", err)); // logs any error
+    }
     redirectTo("/", res);
   });
 });
@@ -75,5 +79,21 @@ application.shutdown = function () {
   // clean up your resources and exit
   process.exit();
 };
+
+const checkCaptcha = async (captcha_response) => {
+  var verified = false;
+  if (captcha_response) {
+    var secret = process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+    const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha_response}`, {
+      method: 'post',
+    });
+    const json = await response.json();
+    console.log('verification response: ', json);
+    if (json.success === true) {
+      verified = true;
+    }
+  }
+  return verified;
+}
 
 module.exports = application;
