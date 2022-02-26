@@ -1,19 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Merriweather&display=swap");
 
-.app {
-  font-family: 'Merriweather', serif;
+:root {
+    --dark-primary-color: #303f9f;
+    --default-primary-color: #3f51b5;
+    --light-primary-color: #c5cae9;
+    --text-primary-color: #ffffff;
+    --accent-color: #4caf50;
+    --primary-text-color: #212121;
+    --secondary-text-color: #757575;
+    --divider-color: #bdbdbd;
 }
 
-/* Rules for sizing the icon. */
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+body {
+    background-color: var(--accent-color);
+    font-family: "Merriweather", serif;
+    font-size: 22px;
+    color: var(--text-primary-color);
+}
 
-/* Rules for using icons as black on a light background. */
-.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.navbar {
+    display: flex;
+    background-color: #3f51b5;
+    border-radius: 12px;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 4px;
+}
 
-/* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.navbar #brand-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.navbar > li:not(:first-child) {
+    padding: 10px;
+}
+
+.navbar > li > a {
+    text-decoration: none;
+    color: var(--text-primary-color);
+}
+
+.navbar .nav-right {
+    margin-left: auto;
+}
+
+.navbar [data-testid="DarkModeIcon"] {
+    padding: 4px;
+    background-color: var(--light-primary-color);
+    border-radius: 4px;
+    color: var(--primary-text-color);
+    cursor: hand;
+}
