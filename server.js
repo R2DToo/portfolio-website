@@ -7,6 +7,7 @@ const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
 const process = require('process');
 const fetch = require('node-fetch');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3003;
 const mailgunClient = mailgun.client({
@@ -14,6 +15,8 @@ const mailgunClient = mailgun.client({
   key: process.env.MAILGUN_API_KEY || '',
   public_key: process.env.MAILGUN_PUBLIC_KEY || ''
 });
+
+const BLACKLIST = require('./blacklist');
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public/assets'));
@@ -30,7 +33,13 @@ app.post('/contact', async (req, res) => {
       next(err);
       return;
     }
-    console.log(fields);
+    if (checkBlacklist(fields.name, fields.email)) {
+      fs.appendFileSync('blacklisted.log', "(" + currentTime() + ") - " + JSON.stringify(fields) + "\n");
+      res.status(418);
+      return res.send("I'm a teapot");
+    }
+    //console.log(fields);
+
     var verified = await checkCaptcha(fields['g-recaptcha-response']);
     if (verified === true) {
       mailgunClient.messages.create(process.env.MAILGUN_SENDING_DOMAIN, {
@@ -94,6 +103,28 @@ const checkCaptcha = async (captcha_response) => {
     }
   }
   return verified;
+}
+
+const checkBlacklist = (name, email) => {
+  let blacklisted = false;
+  if (BLACKLIST.includes(name.toLowerCase()) || BLACKLIST.includes(email.toLowerCase())) {
+    blacklisted = true;
+  }
+  return blacklisted;
+}
+
+const currentTime = () => {
+  var date_ob = new Date();
+  var day = ("0" + date_ob.getDate()).slice(-2);
+  var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+  var year = date_ob.getFullYear();
+
+  var hours = date_ob.getHours();
+  var minutes = date_ob.getMinutes();
+  var seconds = date_ob.getSeconds();
+
+  var dateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+  return dateTime;
 }
 
 module.exports = application;
