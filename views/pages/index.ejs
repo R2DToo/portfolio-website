@@ -2,6 +2,29 @@
 <html>
 
 <head>
+    <script charset="UTF-8" type="text/javascript">
+        window["adrum-start-time"] = new Date().getTime();
+        (function(config){
+            config.appKey = "AD-AAB-ABR-WZH";
+            config.adrumExtUrlHttp = "http://cdn.appdynamics.com";
+            config.adrumExtUrlHttps = "https://cdn.appdynamics.com";
+            config.beaconUrlHttp = "http://col.eum-appdynamics.com";
+            config.beaconUrlHttps = "https://col.eum-appdynamics.com";
+            config.resTiming = {"bufSize":200,"clearResTimingOnBeaconSend":true};
+            config.maxUrlLength = 512;
+            (function(info) {
+                info.PageView = function() {
+                    return {
+                        userData: {
+                            version: '1',
+                            testString: 'example'
+                        }
+                    }
+                }
+            })(config.userEventInfo || (config.userEventInfo = {}))
+        })(window["adrum-config"] || (window["adrum-config"] = {}));
+    </script>
+    <script src="//cdn.appdynamics.com/adrum/adrum-20.12.0.3360.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Braden's Portfolio</title>
