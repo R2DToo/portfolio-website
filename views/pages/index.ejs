@@ -4,6 +4,18 @@
 <head>
     <script charset="UTF-8" type="text/javascript">
         window["adrum-start-time"] = new Date().getTime();
+        window['adrum-config'] = {
+            userEventInfo: {
+                "PageView": function(context) {
+                    return {
+                        userData: {
+                            version: '2',
+                            testString: 'exampleTwo'
+                        }
+                    }
+                }
+            }
+        };
         (function(config){
             config.appKey = "AD-AAB-ABR-WZH";
             config.adrumExtUrlHttp = "http://cdn.appdynamics.com";
@@ -12,16 +24,6 @@
             config.beaconUrlHttps = "https://col.eum-appdynamics.com";
             config.resTiming = {"bufSize":200,"clearResTimingOnBeaconSend":true};
             config.maxUrlLength = 512;
-            (function(info) {
-                info.PageView = function() {
-                    return {
-                        userData: {
-                            version: '1',
-                            testString: 'example'
-                        }
-                    }
-                }
-            })(config.userEventInfo || (config.userEventInfo = {}))
         })(window["adrum-config"] || (window["adrum-config"] = {}));
     </script>
     <script src="//cdn.appdynamics.com/adrum/adrum-20.12.0.3360.js"></script>
