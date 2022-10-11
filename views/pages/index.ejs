@@ -4,30 +4,30 @@
 <head>
     <script charset="UTF-8" type="text/javascript">
         window["adrum-start-time"] = new Date().getTime();
-        window['adrum-config'] = {
-            userEventInfo: {
-                "PageView": function() {
-                    return {
-                        userData: {
-                            username: "john.smith",
-                            brumVersion: window.ADRUM.conf.agentVer
-                        },
-                        userDataLong: {
-                            productsPerPage: 50
-                        },
-                        userDataDouble: {
-                            taxRate: 0.12
-                        },
-                        userDataBoolean: {
-                            loggedIn: true
-                        },
-                        userDataDate: {
-                            currentTime: new Date().getTime()
-                        },
-                    }
-                }
-            }
-        };
+        // window['adrum-config'] = {
+        //     userEventInfo: {
+        //         "PageView": function() {
+        //             return {
+        //                 userData: {
+        //                     username: "john.smith",
+        //                     brumVersion: window.ADRUM.conf.agentVer
+        //                 },
+        //                 userDataLong: {
+        //                     productsPerPage: 50
+        //                 },
+        //                 userDataDouble: {
+        //                     taxRate: 0.12
+        //                 },
+        //                 userDataBoolean: {
+        //                     loggedIn: true
+        //                 },
+        //                 userDataDate: {
+        //                     currentTime: new Date().getTime()
+        //                 },
+        //             }
+        //         }
+        //     }
+        // };
         (function(config){
             config.appKey = "AD-AAB-ABR-WZH";
             config.adrumExtUrlHttp = "/appdynamics";
@@ -36,7 +36,30 @@
             config.beaconUrlHttps = "https://col.eum-appdynamics.com";
             config.resTiming = {"bufSize":200,"clearResTimingOnBeaconSend":true};
             config.maxUrlLength = 512;
+            (function(info) {
+                info.PageView = function () {
+                    return {
+                        userData: {
+                            env: "test"
+                        },
+                        userDataBoolean: {
+                            timeDivisibleByTwo: isCurrentTimeDivisible(new Date().getTime())
+                        },
+                        userDataDate: {
+                            currentTime: new Date().getTime()
+                        }
+                    }
+                }
+            })(config.userEventInfo || (config.userEventInfo = {}))
         })(window["adrum-config"] || (window["adrum-config"] = {}));
+
+        function isCurrentTimeDivisible(currentTime) {
+            if (currentTime % 2 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     </script>
     <script src='appdynamics/adrum-latest.js' type='text/javascript' charset='UTF-8'></script>
     <meta charset="utf-8">
