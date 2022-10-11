@@ -6,11 +6,10 @@
         window["adrum-start-time"] = new Date().getTime();
         window['adrum-config'] = {
             userEventInfo: {
-                "PageView": function(context) {
+                "PageView": function() {
                     return {
                         userData: {
-                            version: '2',
-                            testString: 'exampleTwo'
+                            BrumVersion: window.ADRUM.conf.agentVer.toString()
                         }
                     }
                 }
@@ -27,7 +26,6 @@
         })(window["adrum-config"] || (window["adrum-config"] = {}));
     </script>
     <script src='appdynamics/adrum-latest.js' type='text/javascript' charset='UTF-8'></script>
-    <script src='appdynamics/getVersion.js' type='text/javascript' charset='UTF-8'></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Braden's Portfolio</title>
