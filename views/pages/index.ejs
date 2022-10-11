@@ -9,8 +9,21 @@
                 "PageView": function() {
                     return {
                         userData: {
-                            BrumVersion: window.ADRUM.conf.agentVer.toString()
-                        }
+                            username: "john.smith",
+                            brumVersion: window.ADRUM.conf.agentVer
+                        },
+                        userDataLong: {
+                            productsPerPage: 50
+                        },
+                        userDataDouble: {
+                            taxRate: 0.12
+                        },
+                        userDataBoolean: {
+                            loggedIn: true
+                        },
+                        userDataDate: {
+                            currentTime: new Date().getTime()
+                        },
                     }
                 }
             }
