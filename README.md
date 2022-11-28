@@ -2,3 +2,6 @@
 1. Clone Repo
 2. ```npm install && npm cache clean --force --loglevel-error```
 3. ```docker-compose up -d```
+
+### Version 2
+Release date TBD
