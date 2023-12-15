@@ -38,13 +38,12 @@ app.post('/contact', async (req, res) => {
         next(err);
         return;
       }
-
+      console.log(fields);
       if (checkBlacklist(fields.name[0], fields.email[0])) {
         fs.appendFileSync('blacklisted.log', "(" + currentTime() + ") - " + JSON.stringify(fields) + "\n");
         res.status(418);
         return res.send("I'm a teapot");
       }
-      //console.log(fields);
 
       var verified = await checkCaptcha(fields['g-recaptcha-response'][0]);
       if (verified === true) {
