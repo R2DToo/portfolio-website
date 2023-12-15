@@ -1,1 +1,1 @@
-module.exports = ["eric jones", "eric.jones.z.mail@gmail.com", "ericjones"];
+export default ["eric jones", "eric.jones.z.mail@gmail.com", "ericjones"];

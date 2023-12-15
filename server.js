@@ -1,13 +1,17 @@
-require('dotenv').config();
-const express = require('express');
+import 'dotenv/config'
+import express from 'express';
 const app = express();
-const formidable = require('formidable');
-const formData = require('form-data');
-const Mailgun = require('mailgun.js');
-const mailgun = new Mailgun(formData);
-const process = require('process');
-const fetch = require('node-fetch');
-const fs = require('fs');
+import formidable from 'formidable';
+import * as FormData from 'form-data';
+import Mailgun from 'mailgun.js';
+const mailgun = new Mailgun(FormData);
+import process from 'process';
+import fetch from 'node-fetch';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3003;
 const mailgunClient = mailgun.client({
@@ -16,7 +20,7 @@ const mailgunClient = mailgun.client({
   public_key: process.env.MAILGUN_PUBLIC_KEY || ''
 });
 
-const BLACKLIST = require('./blacklist');
+import BLACKLIST from './blacklist.js';
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public/assets'));
@@ -126,5 +130,3 @@ const currentTime = () => {
   var dateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
   return dateTime;
 }
-
-module.exports = application;
