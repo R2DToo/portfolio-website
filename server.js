@@ -38,23 +38,24 @@ app.post('/contact', async (req, res) => {
       next(err);
       return;
     }
-    if (checkBlacklist(fields.name, fields.email)) {
+
+    if (checkBlacklist(fields.name[0], fields.email[0])) {
       fs.appendFileSync('blacklisted.log', "(" + currentTime() + ") - " + JSON.stringify(fields) + "\n");
       res.status(418);
       return res.send("I'm a teapot");
     }
     //console.log(fields);
 
-    var verified = await checkCaptcha(fields['g-recaptcha-response']);
+    var verified = await checkCaptcha(fields['g-recaptcha-response'][0]);
     if (verified === true) {
       mailgunClient.messages.create(process.env.MAILGUN_SENDING_DOMAIN, {
-        from: fields.name + " <mailgun@" + process.env.MAILGUN_SENDING_DOMAIN + ">",
+        from: fields.name[0] + " <mailgun@" + process.env.MAILGUN_SENDING_DOMAIN + ">",
         to: [process.env.CONTACT_FORM_RECEIVING_EMAIL],
-        subject: "Contact Me -- " + fields.name || "",
-        html: "<h4>Name: " + fields.name + "</h4>" +
-        "<h4>Email: " + fields.email + "</h4>" +
-        "<h4>Phone: " + fields.phone + "</h4>" +
-        "<p>Message: " + fields.message + "</p>"
+        subject: "Contact Me -- " + fields.name[0] || "",
+        html: "<h4>Name: " + fields.name[0] + "</h4>" +
+        "<h4>Email: " + fields.email[0] + "</h4>" +
+        "<h4>Phone: " + fields.phone[0] + "</h4>" +
+        "<p>Message: " + fields.message[0] + "</p>"
       })
       .then(msg => console.log("mailgun response: ", msg)) // logs response data
       .catch(err => console.err("mailgun error: ", err)); // logs any error
