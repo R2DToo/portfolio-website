@@ -24,6 +24,7 @@ import BLACKLIST from './blacklist.js';
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public/assets'));
+app.disable('x-powered-by');
 
 app.get('/', async function (req, res) {
   res.render('pages/index');
