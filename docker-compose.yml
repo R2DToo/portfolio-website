@@ -2,7 +2,7 @@ version: '3'
 services:
   portfolio:
     build: .
-    image: portfolio
+    image: portfolio:2023
     container_name: portfolio
     restart: unless-stopped
     env_file: .env
